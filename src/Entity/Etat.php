@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EtatRepository")
@@ -18,6 +19,7 @@ class Etat
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Choice({"Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée"})
      */
     private $libelle;
 

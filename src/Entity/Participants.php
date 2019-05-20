@@ -3,9 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantsRepository")
+ * @UniqueEntity("email", message = " Ce mail est déjà utilisé veuillez en choisir un autre.")
+ * @UniqueEntity("login", message = " Ce login est déjà utilisé veuillez en choisir un autre.")
  */
 class Participants
 {
@@ -19,7 +23,7 @@ class Participants
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $pseudo;
+    private $login;
 
     /**
      * @ORM\Column(type="string", length=30)
@@ -32,19 +36,21 @@ class Participants
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=15, nullable=true)
+     * @Assert\Regex("^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$")
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\Email(message = "L'adresse mail {{ value }} n'est pas valide.")
      */
     private $mail;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $mot_de_passe;
+    private $password;
 
     /**
      * @ORM\Column(type="boolean")
@@ -56,19 +62,65 @@ class Participants
      */
     private $actif;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Sorties", mappedBy="participants")
+     */
+    private $sorties;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sites")
+     */
+    private $site;
+
+    /**
+     * @return mixed
+     */
+    public function getSite()
+    {
+        return $this->site;
+    }
+
+    /**
+     * @param mixed $site
+     */
+    public function setSite($site)
+    {
+        $this->site = $site;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getSorties()
+    {
+        return $this->sorties;
+    }
+
+    /**
+     * @param mixed $sorties
+     */
+    public function setSorties($sorties)
+    {
+        $this->sorties = $sorties;
+    }
+
+
+
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPseudo(): ?string
+    public function getLogin(): ?string
     {
-        return $this->pseudo;
+        return $this->login;
     }
 
-    public function setPseudo(string $pseudo): self
+    public function setLogin(string $login): self
     {
-        $this->pseudo = $pseudo;
+        $this->login = $login;
 
         return $this;
     }
@@ -121,14 +173,14 @@ class Participants
         return $this;
     }
 
-    public function getMotDePasse(): ?string
+    public function getPassword(): ?string
     {
-        return $this->mot_de_passe;
+        return $this->password;
     }
 
-    public function setMotDePasse(string $mot_de_passe): self
+    public function setPassword(string $password): self
     {
-        $this->mot_de_passe = $mot_de_passe;
+        $this->password = $password;
 
         return $this;
     }

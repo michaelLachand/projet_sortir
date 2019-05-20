@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SortiesRepository")
@@ -18,11 +19,18 @@ class Sorties
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Lenght(min="2" , max="30",
+     *     minMessage="2 caractères minimum SVP!!",
+     *     maxMessage="30 caractères maximun SVP!!")
      */
-    private $nom_sorti;
+    private $nom_sortie;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Asset\DateTime
+     * @var string A "d-m-Y H:i:s" formatted value
+     * @Assert\GreaterThanOrEqual("today", message ="Veuillez indiquer une date supérieure ou égale à aujourd'hui.")
+     *
      */
     private $datedebut;
 
@@ -33,37 +41,128 @@ class Sorties
 
     /**
      * @ORM\Column(type="datetime")
+     * @Asset\DateTime
+     * @var string A "d-m-Y H:i:s" formatted value
+     * @Assert\LessThan(propertyPath="datedebut" ,message =" Veuillez indiquer une date antérieure à {{ datedebut | date("d-m-Y" )}}.")
      */
     private $datecloture;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\GreaterThan(value = 2, message = " La sortie doit avoir au moins 2 participants.")
      */
     private $nbinscriptionsmax;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
+     * @Assert\Length(max="500", message = " La description comporte trop de caractères, veuillez réduire.")
      */
     private $descriptionsinfos;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Choice({"Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée"})
      */
     private $etatsortie;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Participants", inversedBy="sortie")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participants")
+     */
+    private $participants;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sites")
+     */
+    private $site;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Etat")
+     */
+    private $etat;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lieux")
+     */
+    private $lieu;
+
+    /**
+     * @return mixed
+     */
+    public function getLieu()
+    {
+        return $this->lieu;
+    }
+
+    /**
+     * @param mixed $lieu
+     */
+    public function setLieu($lieu)
+    {
+        $this->lieu = $lieu;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * @param mixed $etat
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSite()
+    {
+        return $this->site;
+    }
+
+    /**
+     * @param mixed $site
+     */
+    public function setSite($site)
+    {
+        $this->site = $site;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNomSorti(): ?string
+    /**
+     * @return mixed
+     */
+    public function getParticipants()
     {
-        return $this->nom_sorti;
+        return $this->participants;
     }
 
-    public function setNomSorti(string $nom_sorti): self
+    /**
+     * @param mixed $participants
+     */
+    public function setParticipants($participants)
     {
-        $this->nom_sorti = $nom_sorti;
+        $this->participants = $participants;
+    }
+
+    public function getNomSortie(): ?string
+    {
+        return $this->nom_sortie;
+    }
+
+    public function setNomSortie(string $nom_sortie): self
+    {
+        $this->nom_sortie = $nom_sortie;
 
         return $this;
     }

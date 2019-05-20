@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VillesRepository")
@@ -18,11 +19,13 @@ class Villes
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Length(max="30", message =" Le nom de la ville comporte trop de caractères, veuillez réduire.")
      */
     private $nom_ville;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\Regex("^(0[1-9]|[1-8]\d|9[0-5])\d{3}$", message = " Veuillez rentrer un code postal valide.")
      */
     private $code_postal;
 

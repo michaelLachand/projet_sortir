@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SitesRepository")
  */
@@ -18,7 +18,8 @@ class Sites
 
     /**
      * @ORM\Column(type="string", length=30)
-     */
+     * @Assert\Length(max="30", message =" Le lieu de rendez-vous comporte trop de caractères, veuillez réduire.")
+    */
     private $nom_site;
 
     public function getId(): ?int
@@ -37,4 +38,5 @@ class Sites
 
         return $this;
     }
+
 }

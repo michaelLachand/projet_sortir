@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LieuxRepository")
@@ -18,11 +19,17 @@ class Lieux
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Lenght(min="2" , max="30",
+     *     minMessage="2 caractères minimum SVP!!",
+     *     maxMessage="30 caractères maximun SVP!!")
      */
     private $nom_lieu;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
+     * @Assert\Lenght(min="2" , max="30",
+     *     minMessage="2 caractères minimum SVP!!",
+     *     maxMessage="30 caractères maximun SVP!!")
      */
     private $rue;
 
@@ -36,7 +43,26 @@ class Lieux
      */
     private $longitude;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Villes")
+     */
+    private $ville;
 
+    /**
+     * @return mixed
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+
+    /**
+     * @param mixed $ville
+     */
+    public function setVille($ville)
+    {
+        $this->ville = $ville;
+    }
 
     public function getId(): ?int
     {
