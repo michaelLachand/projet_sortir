@@ -19,7 +19,7 @@ class Villes
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\Length(max="30", message =" Le nom de la ville comporte trop de caractères, veuillez réduire.")
+     * @Assert\Length(max="30", maxMessage=" Le nom de la ville comporte trop de caractères, veuillez réduire.")
      */
     private $nom_ville;
 

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,7 +21,7 @@ class Sorties
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\Lenght(min="2" , max="30",
+     * @Assert\Length(min="2" , max="30",
      *     minMessage="2 caractères minimum SVP!!",
      *     maxMessage="30 caractères maximun SVP!!")
      */
@@ -27,7 +29,7 @@ class Sorties
 
     /**
      * @ORM\Column(type="datetime")
-     * @Asset\DateTime
+     * @Assert\DateTime
      * @var string A "d-m-Y H:i:s" formatted value
      * @Assert\GreaterThanOrEqual("today", message ="Veuillez indiquer une date supérieure ou égale à aujourd'hui.")
      *
@@ -41,9 +43,9 @@ class Sorties
 
     /**
      * @ORM\Column(type="datetime")
-     * @Asset\DateTime
+     * @Assert\DateTime
      * @var string A "d-m-Y H:i:s" formatted value
-     * @Assert\LessThan(propertyPath="datedebut" ,message =" Veuillez indiquer une date antérieure à {{ datedebut | date("d-m-Y" )}}.")
+     * @Assert\LessThan(propertyPath="datedebut" ,message =" Veuillez indiquer une date antérieure à .")
      */
     private $datecloture;
 
@@ -55,7 +57,7 @@ class Sorties
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
-     * @Assert\Length(max="500", message = " La description comporte trop de caractères, veuillez réduire.")
+     * @Assert\Length(max="500", maxMessage=" La description comporte trop de caractères, veuillez réduire.")
      */
     private $descriptionsinfos;
 
@@ -65,13 +67,7 @@ class Sorties
      */
     private $etatsortie;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Participants", inversedBy="sortie")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Participants")
-     */
-    private $participants;
-
-    /**
+     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sites")
      */
     private $site;
@@ -85,6 +81,16 @@ class Sorties
      * @ORM\ManyToOne(targetEntity="App\Entity\Lieux")
      */
     private $lieu;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Participants", mappedBy="sorties")
+     */
+    private $participants;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -139,21 +145,7 @@ class Sorties
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getParticipants()
-    {
-        return $this->participants;
-    }
 
-    /**
-     * @param mixed $participants
-     */
-    public function setParticipants($participants)
-    {
-        $this->participants = $participants;
-    }
 
     public function getNomSortie(): ?string
     {
@@ -235,6 +227,34 @@ class Sorties
     public function setEtatsortie(?int $etatsortie): self
     {
         $this->etatsortie = $etatsortie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Participants[]
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participants $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+            $participant->addSorty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participants $participant): self
+    {
+        if ($this->participants->contains($participant)) {
+            $this->participants->removeElement($participant);
+            $participant->removeSorty($this);
+        }
 
         return $this;
     }

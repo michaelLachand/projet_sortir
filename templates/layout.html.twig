@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>{% block title %}Sortir.Com!!!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" href="{{ asset('img/biere.ico') }}">
+</head>
+    <body>
+        <header>
+            <img src="{{ asset('img/logo.jpg') }}" alt="Sortir.com"> Sortir.Com!!
+        </header>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

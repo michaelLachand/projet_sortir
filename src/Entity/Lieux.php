@@ -19,7 +19,7 @@ class Lieux
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\Lenght(min="2" , max="30",
+     * @Assert\Length(min="2" , max="30",
      *     minMessage="2 caractères minimum SVP!!",
      *     maxMessage="30 caractères maximun SVP!!")
      */
@@ -27,7 +27,7 @@ class Lieux
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
-     * @Assert\Lenght(min="2" , max="30",
+     * @Assert\Length(min="2" , max="30",
      *     minMessage="2 caractères minimum SVP!!",
      *     maxMessage="30 caractères maximun SVP!!")
      */
@@ -44,9 +44,99 @@ class Lieux
     private $longitude;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Villes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Villes",cascade={"remove"})
      */
     private $ville;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     * @return Lieux
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNomLieu()
+    {
+        return $this->nom_lieu;
+    }
+
+    /**
+     * @param mixed $nom_lieu
+     * @return Lieux
+     */
+    public function setNomLieu($nom_lieu)
+    {
+        $this->nom_lieu = $nom_lieu;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRue()
+    {
+        return $this->rue;
+    }
+
+    /**
+     * @param mixed $rue
+     * @return Lieux
+     */
+    public function setRue($rue)
+    {
+        $this->rue = $rue;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @param mixed $latitude
+     * @return Lieux
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param mixed $longitude
+     * @return Lieux
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -58,63 +148,14 @@ class Lieux
 
     /**
      * @param mixed $ville
+     * @return Lieux
      */
     public function setVille($ville)
     {
         $this->ville = $ville;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getNomLieu(): ?string
-    {
-        return $this->nom_lieu;
-    }
-
-    public function setNomLieu(string $nom_lieu): self
-    {
-        $this->nom_lieu = $nom_lieu;
-
         return $this;
     }
 
-    public function getRue(): ?string
-    {
-        return $this->rue;
-    }
 
-    public function setRue(?string $rue): self
-    {
-        $this->rue = $rue;
-
-        return $this;
-    }
-
-    public function getLatitude(): ?float
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(?float $latitude): self
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    public function getLongitude(): ?float
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(?float $longitude): self
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
 
 }

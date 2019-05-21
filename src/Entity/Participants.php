@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantsRepository")
- * @UniqueEntity("email", message = " Ce mail est déjà utilisé veuillez en choisir un autre.")
- * @UniqueEntity("login", message = " Ce login est déjà utilisé veuillez en choisir un autre.")
+ * @UniqueEntity(fields={"mail"}, message = " Ce mail est déjà utilisé veuillez en choisir un autre.")
+ * @UniqueEntity(fields={"login"}, message = " Ce login est déjà utilisé veuillez en choisir un autre.")
  */
 class Participants
 {
@@ -62,15 +64,21 @@ class Participants
      */
     private $actif;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Sorties", mappedBy="participants")
-     */
-    private $sorties;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sites")
      */
     private $site;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Sorties", inversedBy="participants")
+     */
+    private $sorties;
+
+    public function __construct()
+    {
+        $this->sorties = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -92,21 +100,6 @@ class Participants
     /**
      * @return mixed
      */
-    public function getSorties()
-    {
-        return $this->sorties;
-    }
-
-    /**
-     * @param mixed $sorties
-     */
-    public function setSorties($sorties)
-    {
-        $this->sorties = $sorties;
-    }
-
-
-
 
     public function getId(): ?int
     {
@@ -205,6 +198,32 @@ class Participants
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sorties[]
+     */
+    public function getSorties(): Collection
+    {
+        return $this->sorties;
+    }
+
+    public function addSorty(Sorties $sorty): self
+    {
+        if (!$this->sorties->contains($sorty)) {
+            $this->sorties[] = $sorty;
+        }
+
+        return $this;
+    }
+
+    public function removeSorty(Sorties $sorty): self
+    {
+        if ($this->sorties->contains($sorty)) {
+            $this->sorties->removeElement($sorty);
+        }
 
         return $this;
     }

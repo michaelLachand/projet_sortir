@@ -18,7 +18,7 @@ class Sites
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\Length(max="30", message =" Le lieu de rendez-vous comporte trop de caractères, veuillez réduire.")
+     * @Assert\Length(max="30", maxMessage =" Le lieu de rendez-vous comporte trop de caractères, veuillez réduire.")
     */
     private $nom_site;
 
