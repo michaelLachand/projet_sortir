@@ -67,7 +67,7 @@ class Sorties
      */
     private $etatsortie;
 
-     /**
+      /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sites")
      */
     private $site;

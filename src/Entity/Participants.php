@@ -7,13 +7,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantsRepository")
  * @UniqueEntity(fields={"mail"}, message = " Ce mail est déjà utilisé veuillez en choisir un autre.")
  * @UniqueEntity(fields={"login"}, message = " Ce login est déjà utilisé veuillez en choisir un autre.")
  */
-class Participants
+class Participants implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -226,5 +227,16 @@ class Participants
         }
 
         return $this;
+    }
+
+    public function eraseCredentials(){}
+
+    public function getSalt(){}
+
+    public function getUsername(){}
+
+    public function getRoles()
+    {
+       return ['ROLES_USER'];
     }
 }

@@ -10,14 +10,36 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>{% block title %}Sortir.Com!!!{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="icon" href="{{ asset('img/biere.ico') }}">
 </head>
     <body>
-        <header>
-            <img src="{{ asset('img/logo.jpg') }}" alt="Sortir.com"> Sortir.Com!!
+         <header>
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                <!-- Brand/logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="{{ asset('img/logo.jpg') }}" alt="logo" style="width:60px;">
+                </a>
+                <!-- Links -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link 1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link 2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link 3</a>
+                    </li>
+                </ul>
+            </nav>
         </header>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+     <main>
+      {% block main %}
+         {%  endblock %}
+     </main>
+        <footer>
+            © {{ "now"|date("Y") }} Site crée par M&M's!!!
+        </footer>
+     </body>
 </html>

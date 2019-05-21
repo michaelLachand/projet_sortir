@@ -8,10 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends Controller
 {
     /**
-     * @Route("/", name="main")
+     * @Route("/", name="security_login")
      */
     public function index()
     {
-        return $this->render('main/index.html.twig');
+        return $this->render("main/connexion.html.twig");
     }
 }
