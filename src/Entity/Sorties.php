@@ -87,6 +87,29 @@ class Sorties
      */
     private $participants;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participants")
+     */
+    private $organisateur;
+
+    /**
+     * @return mixed
+     */
+    public function getOrganisateur()
+    {
+        return $this->organisateur;
+    }
+
+    /**
+     * @param mixed $organisateur
+     * @return Sorties
+     */
+    public function setOrganisateur($organisateur)
+    {
+        $this->organisateur = $organisateur;
+        return $this;
+    }
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();

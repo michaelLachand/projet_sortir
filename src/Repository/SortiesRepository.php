@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Sorties;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,13 @@ class SortiesRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Sorties::class);
+    }
+
+    public function findSortieEtat(){
+        $qb=$this->createQueryBuilder('s');
+        $qb->join('s.etat','tt');
+        $querry=$qb->getQuery();
+        return new Paginator($querry);
     }
 
     // /**

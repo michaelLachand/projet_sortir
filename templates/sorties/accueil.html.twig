@@ -1,0 +1,66 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Liste des sorties{% endblock %}
+
+{% block body %}
+    <div>
+        <table class="table">
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>
+                        {{ sortie.nomSortie }}
+                    </td>
+                    <td>
+                        {{ sortie.datedebut|date('d-m-Y G:i') }}
+                    </td>
+                    <td>
+                        {{ sortie.datecloture|date('d-m-Y G:i') }}
+                    </td>
+                    <td>
+                        /{{ sortie.nbinscriptionsmax }}
+                    </td>
+                    <td>
+                        {{ sortie.etat.libelle }}
+                    </td>
+                    <td>
+                        inscrit ou pas
+                    </td>
+                    <td>
+                        {{ sortie.organisateur.login }}
+                    </td>
+                    <td>
+                        {% if sortie.etat.id != 1 %}
+                            <a href="#">Afficher</a>
+                        {% endif %}
+                        {% if sortie.etat.id == 2 or sortie.etat.id == 3 %}
+                            <a href="#">Se désister</a>
+                        {% endif %}
+                        {% if sortie.etat.id == 2 %}
+                            <a href="#">S'inscrire</a>
+                        {% endif %}
+                        {% if sortie.etat.id == 1 %}
+                            <a href="#">Modifier</a>
+                        {% endif %}
+                        {% if sortie.etat.id == 1 %}
+                            <a href="#">Publier</a>
+                        {% endif %}
+                        {% if sortie.etat.id == 2 %}
+                            <a href="#">Annuler</a>
+                        {% endif %}
+                    </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
