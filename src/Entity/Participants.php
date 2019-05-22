@@ -233,7 +233,9 @@ class Participants implements UserInterface
 
     public function getSalt(){}
 
-    public function getUsername(){}
+    public function getUsername(){
+        return $this->getMail();
+    }
 
     public function getRoles()
     {
