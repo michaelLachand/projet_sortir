@@ -18,8 +18,8 @@ security:
 
             anonymous: ~
 
-            remenber_me:
-                    secret:   '%kernel.secret%'
+            remember_me:
+                secret:  '%kernel.secret%'
 
 
             provider: in_database
@@ -27,6 +27,7 @@ security:
             form_login:
                 login_path: security_login
                 check_path: security_login
+                default_target_path: accueil
 
             logout:
                 path: security_logout
