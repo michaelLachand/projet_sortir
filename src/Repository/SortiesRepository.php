@@ -22,7 +22,8 @@ class SortiesRepository extends ServiceEntityRepository
 
     public function findSortieEtat(){
         $qb=$this->createQueryBuilder('s');
-        $qb->join('s.etat','tt');
+        $qb->leftJoin('s.etat','tt');
+        $qb->leftJoin('s.participants','par');
         $querry=$qb->getQuery();
         return new Paginator($querry);
     }

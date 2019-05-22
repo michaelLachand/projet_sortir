@@ -22,6 +22,7 @@ class SortiesController extends Controller
 
 
 
+
         $filtreSortie = $this->createForm(SortiesType::class);
         $filtreSortie->handleRequest($request);
         if ($filtreSortie->isSubmitted() && $filtreSortie->isValid()) {

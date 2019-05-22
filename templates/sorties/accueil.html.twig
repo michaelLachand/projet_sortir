@@ -2,7 +2,7 @@
 
 {% block title %}Liste des sorties{% endblock %}
 
-{% block body %}
+{% block main %}
     <div>
         <table class="table">
             <tr>
@@ -27,7 +27,7 @@
                         {{ sortie.datecloture|date('d-m-Y G:i') }}
                     </td>
                     <td>
-                        /{{ sortie.nbinscriptionsmax }}
+                        {{ sortie.participants.snapshot|length }}/{{ sortie.nbinscriptionsmax }}
                     </td>
                     <td>
                         {{ sortie.etat.libelle }}
@@ -45,7 +45,7 @@
                         {% if sortie.etat.id == 2 or sortie.etat.id == 3 %}
                             <a href="#">Se désister</a>
                         {% endif %}
-                        {% if sortie.etat.id == 2 %}
+                        {% if sortie.etat.id == 2 and sortie.participants.snapshot|length < sortie.nbinscriptionsmax %}
                             <a href="#">S'inscrire</a>
                         {% endif %}
                         {% if sortie.etat.id == 1 %}
