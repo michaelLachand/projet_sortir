@@ -1,8 +1,32 @@
 {% extends 'layout.html.twig' %}
 
 
-{% block body %}
+
+{% block header %}
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('img/logo.jpg') }}" alt="logo" style="width:60px;">
+        </a>
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('accueil') }}">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Mon profil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('security_logout') }}">Se déconnecter</a>
+            </li>
+        </ul>
+    </nav>
+{%  endblock %}
+
+{% block main %}
+<img src="{{ asset ('img/' ~ app.user.photo) }}" alt="logo"  height="150px" width="150px" >
 <h1> Coucou </h1>
+
 {{ form_start(form)}}
 
 {{ form_row(form.login, {'label':'Pseudo' ,'attr': {'placeholder':'Veuillez entrer un pseudo '}})}}
@@ -10,10 +34,8 @@
 {{ form_row(form.nom, {'label':'Nom' ,'attr': {'placeholder':'Veuillez entrer votre nom '}})}}
 {{ form_row(form.telephone, {'label':'Téléphone' ,'attr': {'placeholder':'Veuillez entrer votre numéro de téléphone '}})}}
 {{ form_row(form.mail, {'label':'Email' ,'attr': {'placeholder':'Veuillez entrer votre adresse mail '}})}}
-{{ form_row(form.password, {'label':'Mot de passe' ,'attr': {'placeholder':'Veuillez entrer votre mot de passe '}})}}
-{{ form_row(form.confirm_password,{'label':'Confirmation du mot de passe' ,'attr': {'placeholder':'Répétez votre mot de passe '}})}}
-
-<button type="submit" class="btn btn-success">Inscription !</button>
-    <button type="button" class="btn btn-dark">Dark</button>
+{{ form_row(form.photo, { 'label': 'Telecharger vers le serveur' }) }}
+<button type="submit" class="btn btn-success">Enregistrer</button>
+<button type ="reset" onclick="{{ path ('accueil') }}" value="annuler" class="btn btn-dark">Annuler</button>
 {{form_end(form)}}
 {%  endblock %}

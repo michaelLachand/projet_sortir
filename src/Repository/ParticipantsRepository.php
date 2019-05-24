@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Participants;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+
 
 /**
  * @method Participants|null find($id, $lockMode = null, $lockVersion = null)
@@ -12,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Participants[]    findAll()
  * @method Participants[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParticipantsRepository extends ServiceEntityRepository
+class ParticipantsRepository extends ServiceEntityRepository implements UserLoaderInterface
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -22,7 +24,7 @@ class ParticipantsRepository extends ServiceEntityRepository
     // /**
     //  * @return Participants[] Returns an array of Participants objects
     //  */
-    /*
+
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('p')
@@ -33,8 +35,19 @@ class ParticipantsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+
     }
-    */
+
+    public function loadUserByUsername($username)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.mail = :username OR u.login = :username')
+            ->setParameter('username', $username)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
 
     /*
     public function findOneBySomeField($value): ?Participants

@@ -8,7 +8,6 @@ security:
         in_database:
             entity:
                 class: App\Entity\Participants
-                property: mail
 
     firewalls:
         dev:
@@ -19,7 +18,8 @@ security:
             anonymous: ~
 
             remember_me:
-                secret:  '%kernel.secret%'
+                secret:   '%kernel.secret%'
+                lifetime: 1000
 
 
             provider: in_database
@@ -34,6 +34,7 @@ security:
                 target: security_login
 
 
+
             # activate different ways to authenticate
 
             # http_basic: true
@@ -46,4 +47,5 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: /profile, roles: ROLE_USER }
+        # - { path: ^/user, roles: ROLE_USER }
+          - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

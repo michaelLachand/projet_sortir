@@ -11,10 +11,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantsRepository")
- * @UniqueEntity(fields={"mail"}, message = " Ce mail est déjà utilisé veuillez en choisir un autre.")
  * @UniqueEntity(fields={"login"}, message = " Ce login est déjà utilisé veuillez en choisir un autre.")
  */
-class Participants implements UserInterface
+//@UniqueEntity(fields={"mail"}, message = " Ce mail est déjà utilisé veuillez en choisir un autre.")
+
+class Participants implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -40,18 +41,19 @@ class Participants implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=15, nullable=true)
-     * @Assert\Regex("^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$")
+     *
      */
     private $telephone;
+//Assert\Regex("^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$")
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Assert\Email(message = "L'adresse mail {{ value }} n'est pas valide.")
      */
     private $mail;
+ //@Assert\Email(message = "L'adresse mail {{ value }} n'est pas valide.")
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=150)
      */
     private $password;
 
@@ -76,9 +78,38 @@ class Participants implements UserInterface
      */
     private $sorties;
 
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\File(
+     * maxSize="1000k",
+     * maxSizeMessage="Le fichier excède 1000Ko.",
+     * mimeTypes={"image/png", "image/jpeg", "image/jpg", "image/svg+xml", "image/gif"},
+     * mimeTypesMessage= "formats autorisés: png, jpeg, jpg, svg, gif"
+     * )
+     */
+    private $photo;
+
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * @param mixed $photo
+     * @return Participants
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+        return $this;
     }
 
     /**
@@ -234,11 +265,50 @@ class Participants implements UserInterface
     public function getSalt(){}
 
     public function getUsername(){
+
         return $this->getMail();
     }
-
     public function getRoles()
     {
        return ['ROLES_USER'];
+    }
+
+    /**
+     * String representation of object
+     * @link https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->login,
+            $this->mail,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /**
+     * Constructs the object
+     * @link https://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->login,
+            $this->mail,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
     }
 }

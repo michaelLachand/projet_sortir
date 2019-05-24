@@ -1,1 +1,11 @@
 {% extends 'layout.html.twig' %}
+
+{%  block main %}
+    <img src="{{ asset ('img/' ~ app.user.photo) }}"  height="150px" width="150px" >
+<p> Prénom : {{ app.user.prenom }} </p>
+<p> Nom : {{ app.user.nom }}</p>
+<p> Téléphone : {{ app.user.telephone }}</p>
+<p> Email : {{ app.user.mail }}</p>
+<p> Ville de rattachement : </p>
+{% endblock %}
+

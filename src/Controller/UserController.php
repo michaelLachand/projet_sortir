@@ -16,4 +16,29 @@ class UserController extends Controller
             'controller_name' => 'UserController',
         ]);
     }
+
+    /**
+     * @Route("/mon_profil", name="mon_profil")
+     */
+    public function monProfil()
+    {
+        $user=$this->getUser();
+        return $this->render('user/mon_profil.html.twig', [
+            'controller_name' => 'UserController', 'participants' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/afficher_profil", name="afficher_profil")
+     */
+    public function afficherProfil()
+    {
+        $user=$this->getUser();
+
+        return $this->render('user/afficher_profil.html.twig', [
+            'controller_name' => 'UserController', 'participants' => $user,
+        ]);
+    }
+
+
 }
