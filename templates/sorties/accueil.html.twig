@@ -24,12 +24,61 @@
  {%  endblock %}
 
 {% block main %}
+    <div><h6>Bienvenue {{ app.user.login }}</h6></div>
+    <div><h6>Nous sommes le {{ "now"|date("d/m/Y") }}</h6></div>
+    <div class="container">
+        <div><h5>Filtrer les sorties</h5></div>
+
+        <div class="row">
+            <div class="col-6">
+
+                {{ form_start(filtreSortie) }}
+                <div class="input-group-prepend">
+                    <div class="form-control">{{ form_row(filtreSortie.site) }}</div>
+                </div>
+
+                <div class="input-group-prepend">
+                    <div class="form-control">{{ form_row(filtreSortie.nom_sortie) }}</div>
+                </div>
+
+
+                <div class="row">
+                    <div class="input-group-prepend">
+                        <div class="form-control">
+                            {{ form_row(filtreSortie.entreDate) }}
+                        </div>
+                    </div>
+                    <div class="input-group-prepend">
+                        <div class="form-control">
+                            {{ form_row(filtreSortie.etDate) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-control">{{ form_row(filtreSortie.organisateur) }}</div>
+                <div class="form-control">{{ form_row(filtreSortie.inscrit) }}</div>
+
+                <div class="form-control">{{ form_row(filtreSortie.nonInscrit) }}</div>
+
+                <div class="form-control">{{ form_row(filtreSortie.passe) }}</div>
+
+
+            </div>
+            <div class="container">
+            <div class="col-sm">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+            </div>
+        </div>
+        {{ form_end(filtreSortie) }}
+    </div>
     <div>
         <table class="table">
             <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Clôture</th>
+                <th>Nom de la sortie :</th>
+                <th>Date de la sortie :</th>
+                <th>Clôture des inscriptions le :</th>
                 <th>Inscrits/places</th>
                 <th>Etat</th>
                 <th>Inscrit</th>
@@ -37,6 +86,7 @@
                 <th>Actions</th>
             </tr>
             {% for sortie in sorties %}
+
                 <tr>
                     <td>
                         {{ sortie.nomSortie }}
@@ -48,40 +98,52 @@
                         {{ sortie.datecloture|date('d-m-Y G:i') }}
                     </td>
                     <td>
-                        /{{ sortie.nbinscriptionsmax }}
+                        {{ sortie.participants.snapshot|length }}/{{ sortie.nbinscriptionsmax }}
                     </td>
                     <td>
                         {{ sortie.etat.libelle }}
                     </td>
                     <td>
-                        inscrit ou pas
+                        {% set participe = false %}
+                        {% for participant in sortie.participants.snapshot %}
+                            {% if app.user.id == participant.id %}
+                                <img src="{{ asset('img/valide.png') }}" alt="">
+                                {% set participe = true %}
+                            {% endif %}
+                        {% endfor %}
                     </td>
                     <td>
                         {{ sortie.organisateur.login }}
                     </td>
                     <td>
+                        {% set maSortie = false %}
+                        {% if app.user.id == sortie.organisateur.id %}
+                            {% set maSortie = true %}
+                        {% endif %}
                         {% if sortie.etat.id != 1 %}
                             <a href="#">Afficher</a>
                         {% endif %}
-                        {% if sortie.etat.id == 2 or sortie.etat.id == 3 %}
+                        {% if sortie.etat.id == 2 and participe == true or sortie.etat.id == 3 and participe == true %}
                             <a href="#">Se désister</a>
                         {% endif %}
-                        {% if sortie.etat.id == 2 %}
+                        {% if sortie.etat.id == 2 and sortie.participants.snapshot|length < sortie.nbinscriptionsmax and participe != true %}
                             <a href="#">S'inscrire</a>
                         {% endif %}
-                        {% if sortie.etat.id == 1 %}
+                        {% if sortie.etat.id == 1 and maSortie == true %}
                             <a href="#">Modifier</a>
                         {% endif %}
-                        {% if sortie.etat.id == 1 %}
+                        {% if sortie.etat.id == 1 and maSortie == true %}
                             <a href="#">Publier</a>
                         {% endif %}
-                        {% if sortie.etat.id == 2 %}
+                        {% if sortie.etat.id == 2 and maSortie == true %}
                             <a href="#">Annuler</a>
                         {% endif %}
                     </td>
                 </tr>
-
             {% endfor %}
         </table>
     </div>
+<div class="container">
+   <h2> <a href="{{ path('creer') }}" class="badge badge-primary">Créer une sortie</a></h2>
+</div>
 {% endblock %}
