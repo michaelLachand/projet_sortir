@@ -40,4 +40,5 @@ class RegistrationType extends AbstractType
             'data_class' => Participants::class
         ]);
     }
+
 }

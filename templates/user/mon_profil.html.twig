@@ -36,6 +36,8 @@
 {{ form_row(form.mail, {'label':'Email' ,'attr': {'placeholder':'Veuillez entrer votre adresse mail '}})}}
 {{ form_row(form.photo, { 'label': 'Telecharger vers le serveur' }) }}
 <button type="submit" class="btn btn-success">Enregistrer</button>
-<button type ="reset" onclick="{{ path ('accueil') }}" value="annuler" class="btn btn-dark">Annuler</button>
+<button type ="reset" onclick='location.href="sorties"' class="btn btn-dark">Annuler</button>
+<a type="button" class="btn btn-primary" href="{{ path('mot_de_passe') }}" role="button">Changer le mot de passe</a>
+
 {{form_end(form)}}
 {%  endblock %}
