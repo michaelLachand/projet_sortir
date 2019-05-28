@@ -12,8 +12,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantsRepository")
  * @UniqueEntity(fields={"login"}, message = " Ce login est déjà utilisé veuillez en choisir un autre.")
+ * @UniqueEntity(fields={"mail"}, message = " Ce mail est déjà utilisé veuillez en choisir un autre.")
  */
-//@UniqueEntity(fields={"mail"}, message = " Ce mail est déjà utilisé veuillez en choisir un autre.")
+
 
 class Participants implements UserInterface, \Serializable
 {
@@ -48,9 +49,10 @@ class Participants implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\Email(message = "L'adresse mail {{ value }} n'est pas valide.")
      */
     private $mail;
- //@Assert\Email(message = "L'adresse mail {{ value }} n'est pas valide.")
+
 
     /**
      * @ORM\Column(type="string", length=150)

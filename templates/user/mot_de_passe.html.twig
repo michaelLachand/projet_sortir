@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{%  block main %}
+
+
+    {{ form_start(formPassword)}}
+
+    {{ form_row(formPassword.oldPassword, {'label':'Ancien mot de passe' ,'attr': {'placeholder':'Veuillez entrer votre ancien mot de passe '}})}}
+  {{ form_row(formPassword.password, {'label':'Nouveau mot de passe' ,'attr': {'placeholder':'Veuillez entrer votre nouveau mot de passe '}})}}
+{#    <button type="submit" class="btn btn-success">Enregistrer</button>#}
+
+    {{form_end(formPassword)}}
+
+{% endblock %}
