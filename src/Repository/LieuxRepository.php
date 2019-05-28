@@ -14,6 +14,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class LieuxRepository extends ServiceEntityRepository
 {
+    public function findLieuxByVille($idVille){
+        $qb = $this->createQueryBuilder('lieuxDeVille')
+        ->andWhere('lieuxDeVille.ville = :id')
+        ->setParameter('id',$idVille);
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
+    public function findAdresseLieu($idLieu){
+        $qb = $this->createQueryBuilder('adresseLieu')
+            ->andWhere('adresseLieu.id = :id')
+            ->setParameter('id',$idLieu);
+        $query=$qb->getQuery();
+        return$query->getResult();
+    }
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Lieux::class);

@@ -1,1 +1,107 @@
-<h1>salut</h1>
+{% extends 'layout.html.twig' %}
+
+{% block title %}Créer une nouvelle sortie{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div><h5>Créer une sortie</h5></div>
+
+        {{ form_start(creerSortie) }}
+        <div class="form-group row">
+            {{ form_row(creerSortie.nom_sortie) }}
+        </div>
+        <div class="form-group row">
+            {{ form_row(creerSortie.datedebut) }}
+        </div>
+        <div class="form-group row">
+            {{ form_row(creerSortie.datecloture) }}
+        </div>
+        <div class="form-group row">
+            {{ form_row(creerSortie.nbinscriptionsmax) }}
+        </div>
+        <div class="form-group row">
+            {{ form_row(creerSortie.duree) }}
+        </div>
+        <div class="form-group row">
+            {{ form_row(creerSortie.descriptionsinfos) }}
+        </div>
+        <div>Ville organisatrice</div>
+        <div class="form-group row">
+            {{ form_row(creerSortie.ville) }}
+        </div>
+        <label>Lieu : </label>
+        <div class="form-group row">
+            <select name="lieux" id="lieux"></select>
+        </div>
+        <div>Rue :</div>
+        <div class="form-group row" id="rue">
+        </div>
+        <div>Code postal :</div>
+        <div class="form-group row" id="codePostal">
+        </div>
+        <div>Latitude :</div>
+        <div class="form-group row" id="latitude">
+        </div>
+        <div>Longitude :</div>
+        <div class="form-group row" id="longitude">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Créer une sortie</button>
+        {{ form_end(creerSortie) }}
+    </div>
+
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#creer_sortie_ville').change();
+        });
+        $('#creer_sortie_ville').change(function (e) {
+            var ville = $('#creer_sortie_ville').val();
+            console.log(ville);
+            $.ajax({
+                url: "{{ path('lieuxDeVille') }}?ville=" + ville,
+                cache: false
+            })
+                .done(function (lieux) {
+                    $('#lieux').empty();
+                    $('#codePostal').empty();
+                    $('#codePostal').append($('<div>' + lieux[0].codePostal + '</div>'));
+                    lieux.forEach(function (lieu) {
+                        console.log(lieu.nom);
+                        $('#lieux').append($('<option value="' + lieu.id + '">' + lieu.nom + '</option>'));
+                    });
+                    //on actualise les lieux en changeant de ville en appelant la fonction de lieu
+                    $('#lieux').change();
+                });
+            e.preventDefault();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#lieux').change();
+        });
+        $('#lieux').change(function (e) {
+            var lieu = $('#lieux').val();
+            $.ajax({
+                url: "{{ path('adresseLieu') }}?lieu=" + lieu,
+                cache: false
+            })
+                .done(function (lieux) {
+                    $('#rue').empty();
+                    $('#latitude').empty();
+                    $('#longitude').empty();
+                    lieux.forEach(function (lieu) {
+                        $('#rue').append($('<div>' + lieu.rue + '</div>'));
+                        $('#latitude').append($('<div>' + lieu.latitude + '</div>'));
+                        $('#longitude').append($('<div>' + lieu.longitude + '</div>'));
+                    });
+                });
+            e.preventDefault();
+        });
+    </script>
+
+
+{% endblock %}
+
+

@@ -79,9 +79,6 @@ class SortiesRepository extends ServiceEntityRepository
 
 
                 $qb->setParameter('part2', $utilisateur);
-//                dump($qb->getDQL());
-//                dump($qb2->getQuery());
-//                dump($qb2->getDQL());
             }
         }
         if (!is_null($dateDebut) and !is_null($dateFin)) {

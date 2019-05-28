@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Sorties;
 use App\Entity\Sites;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,6 +20,7 @@ class SortiesType extends AbstractType
                 'class' => Sites::class,
                 'choice_label' => 'nom_site',
                 'label'=>'Site : ',
+
             ])
             ->add('nom_sortie', TextType::class, ['label' => 'Le nom de la sortie contient : ',
                 'required'=>false
