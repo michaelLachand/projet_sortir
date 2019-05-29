@@ -31,19 +31,16 @@ class CreerSortieType extends AbstractType
             ])
             ->add('datedebut', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie : ',
-//                'date_widget'=>'dd MM yyyy hh mm',
-//                'date_format'=>'dd MM yyyy hh mm',
-//                'format'=>'dd MM yyyy hh mm',
                 'attr' => [
                     'col-sm-10 form-control-plaintext'
                 ],
                 'label_attr' => [
                     'class' => 'class="col-sm-2 col-form-label">'
                 ],
-                'placeholder'=>[
+                'placeholder' => [
                     'year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',
                     'hour' => 'Heure', 'minute' => 'Minute',
-                    ]
+                ]
             ])
             ->add('duree', IntegerType::class, [
                 'label' => 'Durée de la sortie en minutes : ',
@@ -56,14 +53,14 @@ class CreerSortieType extends AbstractType
             ])
             ->add('datecloture', DateType::class, [
                 'label' => 'Date limite d\'insciption : ',
-                'format'=>'dd MM yyyy',
+                'format' => 'dd MM yyyy',
                 'attr' => [
                     'col-sm-10 form-control-plaintext'
                 ],
                 'label_attr' => [
                     'class' => 'class="col-sm-2 col-form-label">'
                 ],
-                'placeholder'=>[
+                'placeholder' => [
                     'year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',
                 ]
             ])
@@ -85,20 +82,21 @@ class CreerSortieType extends AbstractType
                     'class' => 'class="col-sm-2 col-form-label">'
                 ]
             ])
-//            ->add('lieu', EntityType::class, [
-//                'class' => Lieux::class,
-//                'choice_label'=>'nom_lieu',
-//                'attr' => [
-//                    'col-sm-10form-control-plaintext'
-//                ],
-//                'label_attr' => [
-//                    'class' => 'class="col-sm-2 col-form-label">'
-//                ],
-//                'label' => 'Lieu : '
-//            ])
-            ->add('ville', EntityType::class,[
+            ->add('lieu', EntityType::class, [
+                'class' => Lieux::class,
+                'choice_label' => 'nom_lieu',
+                'attr' => [
+                    'col-sm-10form-control-plaintext'
+                ],
+                'label_attr' => [
+                    'class' => 'class="col-sm-2 col-form-label">'
+                ],
+                'label' => 'Lieu : '
+            ])
+            ->add('ville', EntityType::class, [
                 'class' => Villes::class,
-                'choice_label'=>'nom_ville',
+                'choice_label' => 'nom_ville',
+                'mapped' => false,
                 'attr' => [
                     'col-sm-10 form-control-plaintext'
                 ],
@@ -106,9 +104,7 @@ class CreerSortieType extends AbstractType
                     'class' => 'class="col-sm-2 col-form-label">'
                 ],
                 'label' => 'Ville : '
-            ])
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -21,11 +21,13 @@ class SortiesRepository extends ServiceEntityRepository
         parent::__construct($registry, Sorties::class);
     }
 
-    public function findSortieEtat()
+    public function findSortieEtat($utilisateur)
     {
         $qb = $this->createQueryBuilder('s');
         $qb->leftJoin('s.etat', 'tt');
         $qb->leftJoin('s.participants', 'par');
+        $qb->andWhere('s.site = :site')
+        ->setParameter('site',$utilisateur->getSite());
         $query = $qb->getQuery();
         return $query->getResult();
     }

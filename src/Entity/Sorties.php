@@ -31,7 +31,7 @@ class Sorties
      * @ORM\Column(type="datetime")
      * @Assert\DateTime
      * @var string A "d-m-Y H:i:s" formatted value
-     * @Assert\GreaterThanOrEqual("today", message ="Veuillez indiquer une date supérieure ou égale à aujourd'hui.")
+     * @Assert\GreaterThanOrEqual("today", message ="Veuillez indiquer une date postérieure ou égale à aujourd'hui.")
      *
      */
     private $datedebut;
@@ -45,6 +45,7 @@ class Sorties
      * @ORM\Column(type="datetime")
      * @Assert\DateTime
      * @var string A "d-m-Y H:i:s" formatted value
+     * @Assert\GreaterThan("today", message ="Veuillez indiquer une date postérieure à aujourd'hui.")
      * @Assert\LessThan(propertyPath="datedebut" ,message =" Veuillez indiquer une date antérieure à .")
      */
     private $datecloture;

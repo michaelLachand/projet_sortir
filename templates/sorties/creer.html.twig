@@ -29,20 +29,22 @@
         <div class="form-group row">
             {{ form_row(creerSortie.ville) }}
         </div>
-        <label>Lieu : </label>
+{#        <label>Lieu : </label>#}
         <div class="form-group row">
-            <select name="lieux" id="lieux"></select>
+
+            {{ form_row(creerSortie.lieu) }}
+{#            <select name="lieux" id="lieux"></select>#}
         </div>
-        <div>Rue :</div>
+        <div class="form-group row">Rue :</div>
         <div class="form-group row" id="rue">
         </div>
-        <div>Code postal :</div>
+        <div class="form-group row">Code postal :</div>
         <div class="form-group row" id="codePostal">
         </div>
-        <div>Latitude :</div>
+        <div class="form-group row">Latitude :</div>
         <div class="form-group row" id="latitude">
         </div>
-        <div>Longitude :</div>
+        <div class="form-group row">Longitude :</div>
         <div class="form-group row" id="longitude">
         </div>
 
@@ -63,15 +65,18 @@
                 cache: false
             })
                 .done(function (lieux) {
-                    $('#lieux').empty();
+                    $('#creer_sortie_lieu').empty();
+                    // $('#lieux').empty();
                     $('#codePostal').empty();
                     $('#codePostal').append($('<div>' + lieux[0].codePostal + '</div>'));
                     lieux.forEach(function (lieu) {
                         console.log(lieu.nom);
-                        $('#lieux').append($('<option value="' + lieu.id + '">' + lieu.nom + '</option>'));
+                        $('#creer_sortie_lieu').append($('<option value="' + lieu.id + '">' + lieu.nom + '</option>'));
+                        // $('#lieux').append($('<option value="' + lieu.id + '">' + lieu.nom + '</option>'));
                     });
                     //on actualise les lieux en changeant de ville en appelant la fonction de lieu
-                    $('#lieux').change();
+                    $('#creer_sortie_lieu').change();
+                    // $('#lieux').change();
                 });
             e.preventDefault();
         });
@@ -79,10 +84,14 @@
 
     <script>
         $(document).ready(function () {
-            $('#lieux').change();
+            $('#creer_sortie_lieu').change();
+            // $('#lieux').change();
         });
-        $('#lieux').change(function (e) {
-            var lieu = $('#lieux').val();
+        $('#creer_sortie_lieu').change(function (e) {
+        // $('#lieux').change(function (e) {
+            var lieu = $('#creer_sortie_lieu').val();
+            // var lieu = $('#lieux').val();
+            console.log(lieu);
             $.ajax({
                 url: "{{ path('adresseLieu') }}?lieu=" + lieu,
                 cache: false

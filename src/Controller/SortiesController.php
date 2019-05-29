@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Lieux;
 use App\Entity\Sorties;
 use App\Entity\Villes;
 use App\Form\CreerSortieType;
 use App\Form\SortiesType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +16,61 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SortiesController extends Controller
 {
+    /**
+     * @Route("annuler",name="annuler")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function annuler(Request $request, EntityManagerInterface $em){
+        $idSortie = $request->get('id');
+        $sortieRepo = $this->getDoctrine()->getRepository(Sorties::class);
+        $sortie = $sortieRepo->find($idSortie);
+        $etatRepo = $this->getDoctrine()->getRepository(Etat::class);
+        $etatAnnulee = $etatRepo->find(6);
+        $sortie->setEtat($etatAnnulee);
+        $em->persist($sortie);
+        $em->flush();
+        $this->addFlash('success', 'Votre sortie a bien été annulée');
+        return $this->redirectToRoute("accueil");
+    }
+
+    /**
+     * @Route("seDesister",name="seDesister")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     */
+    public function seDesister(Request $request, EntityManagerInterface $em)
+    {
+        $utilisateur = $this->getUser();
+        $idSortie = $request->get('id');
+        $sortieRepo = $this->getDoctrine()->getRepository(Sorties::class);
+        $sortie = $sortieRepo->find($idSortie);
+        $sortie->removeParticipant($utilisateur);
+        $em->persist($sortie);
+        $em->flush();
+        $this->addFlash('success', 'Vous êtes bien désinscrit de la sortie');
+        return $this->redirectToRoute("accueil");
+    }
+
+    /**
+     * @Route("/sInscrire",name="sInscrire")
+     */
+    public function sInscrire(Request $request, EntityManagerInterface $em)
+    {
+        $utilisateur = $this->getUser();
+        $idSortie = $request->get('id');
+        $sortieRepo = $this->getDoctrine()->getRepository(Sorties::class);
+        $sortie = $sortieRepo->find($idSortie);
+        $sortie->addParticipant($utilisateur);
+        $em->persist($sortie);
+        $em->flush();
+        $this->addFlash('success', 'Vous êtes bien inscrit à la sortie');
+
+        return $this->redirectToRoute("accueil");
+    }
+
+
     /**
      * @Route("/adresseLieu",name="adresseLieu")
      */
@@ -77,15 +134,17 @@ class SortiesController extends Controller
      */
     public function filtreSorties(Request $request)
     {
+        $utilisateur = $this->getUser();
+
         //je récupère toutes les sorties et je les affiche dans un tableau
         $sortieRepo = $this->getDoctrine()->getRepository(Sorties::class);
-        $sorties = $sortieRepo->findSortieEtat();
+        $sorties = $sortieRepo->findSortieEtat($utilisateur);
 
         $filtreSortie = $this->createForm(SortiesType::class);
         $filtreSortie->handleRequest($request);
 
         if ($filtreSortie->isSubmitted() && $filtreSortie->isValid()) {
-            $utilisateur = $this->getUser();
+
             $sorties = $sortieRepo->findSortieByRecherche($filtreSortie, $utilisateur);
             return $this->render('sorties/accueil.html.twig', [
                 'controller_name' => 'SortiesController',
@@ -103,20 +162,28 @@ class SortiesController extends Controller
     /**
      * @Route("/creerSortie", name="creer")
      */
-    public function creerSortie(Request $request)
+    public function creerSortie(Request $request, EntityManagerInterface $em)
     {
+        $sortie = new Sorties();
+        $creerSortieForm = $this->createForm(CreerSortieType::class, $sortie);
+        $creerSortieForm->handleRequest($request);
 
-
-
-
-        $creerSortieForm = $this->createForm(CreerSortieType::class);
-        dump($creerSortieForm);
-      //  $creerSortieForm->handleRequest($request);
-
-//        if ($creerSortieForm->isSubmitted() && $creerSortieForm->isValid()) {
+        if ($creerSortieForm->isSubmitted() && $creerSortieForm->isValid()) {
+            $utilisateur = $this->getUser();
+            $sortie->setOrganisateur($utilisateur);
+            $etatRepo = $this->getDoctrine()->getRepository(Etat::class);
+            $etatOuverte = $etatRepo->find(2);
+//            dump($etatOuverte);
+            $sortie->setEtat($etatOuverte);
+            $sortie->addParticipant($utilisateur);
+            $sortie->setSite($utilisateur->getSite());
 //            dump($creerSortieForm);
-//            $sortie = new Sorties();
-//        }
+            $em->persist($sortie);
+            $em->flush();
+            $this->addFlash('success', 'La sortie a bien été créée');
+
+            return $this->redirectToRoute("accueil");
+        }
         return $this->render('sorties/creer.html.twig', [
             'controller_name' => 'SortiesController',
             'creerSortie' => $creerSortieForm->createView(),

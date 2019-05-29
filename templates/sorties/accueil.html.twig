@@ -21,7 +21,7 @@
              </li>
          </ul>
      </nav>
- {%  endblock %}
+ {% endblock %}
 
 {% block main %}
     <div><h6>Bienvenue {{ app.user.login }}</h6></div>
@@ -55,7 +55,6 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Rechercher</button>
-
 
 
         {{ form_end(filtreSortie) }}
@@ -111,10 +110,10 @@
                             <a href="#">Afficher</a>
                         {% endif %}
                         {% if sortie.etat.id == 2 and participe == true or sortie.etat.id == 3 and participe == true %}
-                            <a href="#">Se désister</a>
+                            <a href="{{ path('seDesister', {'id':sortie.id}) }}">Se désister</a>
                         {% endif %}
                         {% if sortie.etat.id == 2 and sortie.participants.snapshot|length < sortie.nbinscriptionsmax and participe != true %}
-                            <a href="#">S'inscrire</a>
+                            <a href="{{ path('sInscrire', {'id':sortie.id}) }}">S'inscrire</a>
                         {% endif %}
                         {% if sortie.etat.id == 1 and maSortie == true %}
                             <a href="#">Modifier</a>
@@ -123,7 +122,7 @@
                             <a href="#">Publier</a>
                         {% endif %}
                         {% if sortie.etat.id == 2 and maSortie == true %}
-                            <a href="#">Annuler</a>
+                            <a href="{{ path('annuler', {'id':sortie.id}) }}">Annuler</a>
                         {% endif %}
                     </td>
                 </tr>
