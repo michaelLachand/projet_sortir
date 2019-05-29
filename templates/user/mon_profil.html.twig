@@ -24,7 +24,7 @@
 {%  endblock %}
 
 {% block main %}
-<img src="{{ asset ('img/' ~ app.user.photo) }}" alt="logo"  height="150px" width="150px" >
+<img src="{{ asset ('img/' ~ app.user.photoUrl) }}" alt="logo"  height="150px" width="150px" >
 <h1> Coucou </h1>
 
 {{ form_start(form)}}
@@ -34,10 +34,10 @@
 {{ form_row(form.nom, {'label':'Nom' ,'attr': {'placeholder':'Veuillez entrer votre nom '}})}}
 {{ form_row(form.telephone, {'label':'Téléphone' ,'attr': {'placeholder':'Veuillez entrer votre numéro de téléphone '}})}}
 {{ form_row(form.mail, {'label':'Email' ,'attr': {'placeholder':'Veuillez entrer votre adresse mail '}})}}
-{{ form_row(form.photo, { 'label': 'Telecharger vers le serveur' }) }}
+{{ form_row(form.site, {'label':'Ville de rattachement' ,'attr': {'placeholder':'Veuillez entrer votre adresse mail '}})}}
+{{ form_row(form.photo, {'label': 'Telecharger vers le serveur'})}}
 <button type="submit" class="btn btn-success">Enregistrer</button>
 <button type ="reset" onclick='location.href="sorties"' class="btn btn-dark">Annuler</button>
 <a type="button" class="btn btn-primary" href="{{ path('mot_de_passe') }}" role="button">Changer le mot de passe</a>
-
 {{form_end(form)}}
 {%  endblock %}

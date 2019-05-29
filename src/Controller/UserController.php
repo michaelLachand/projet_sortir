@@ -29,8 +29,10 @@ class UserController extends Controller
      */
     public function monProfil(Request $request)
     {
+        /** @var Participants $user */
         $user = $this->getUser();
-        if ($user->getPhoto() != "") {
+        $user->setPhotoUrl($user->getPhoto());
+        if ($user->getPhoto() !=""){
             $user->setPhoto(
                 new File($this->getParameter('images_directory') . '/' . $user->getPhoto())
             );
@@ -94,24 +96,23 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $formPassword = $this->createForm(ChangePasswordType::class);
-        dump($formPassword);
+
         $formPassword->handleRequest($request);
-        dump($formPassword);
+        ;
 
         if ($formPassword->isSubmitted() && $formPassword->isValid()) {
 
             $passwordEncoder = $this->get('security.password_encoder');
             $oldPassword = $request->request->get('change_password')['oldPassword'];
-            dump($formPassword);
-            // Si l'ancien mot de passe est bon
+                // Si l'ancien mot de passe est bon
             if ($passwordEncoder->isPasswordValid($user, $oldPassword)) {
-                dump($formPassword);
 
-                $user->setPassword($passwordEncoder->encodePassword($user, $formPassword->get('password')->getData()));
+                //$newEncodedPassword = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+                $user->setPassword($passwordEncoder->encodePassword($user,$formPassword->get('password')->getData()));
 
                 $em->persist($user);
                 $em->flush();
-                dump($formPassword);
+
                 $this->addFlash('notice', 'Votre mot de passe à bien été changé !');
 
                 return $this->redirectToRoute('accueil');
@@ -132,3 +133,4 @@ class UserController extends Controller
     }
 
 }
+
