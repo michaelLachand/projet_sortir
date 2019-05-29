@@ -99,7 +99,8 @@
                         {% endfor %}
                     </td>
                     <td>
-                        {{ sortie.organisateur.login }}
+                        <a href="{{ path('afficher_profil',{'id':sortie.organisateur.getId}) }}">{{ sortie.organisateur.login }}</a>
+
                     </td>
                     <td>
                         {% set maSortie = false %}
@@ -107,7 +108,7 @@
                             {% set maSortie = true %}
                         {% endif %}
                         {% if sortie.etat.id != 1 %}
-                            <a href="#">Afficher</a>
+                            <a href="{{ path('afficherSortie', {'id':sortie.id}) }}">Afficher</a>
                         {% endif %}
                         {% if sortie.etat.id == 2 and participe == true or sortie.etat.id == 3 and participe == true %}
                             <a href="{{ path('seDesister', {'id':sortie.id}) }}">Se désister</a>

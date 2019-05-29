@@ -6,6 +6,7 @@ use App\Entity\Etat;
 use App\Entity\Lieux;
 use App\Entity\Sorties;
 use App\Entity\Villes;
+use App\Form\AnnulerSortieType;
 use App\Form\CreerSortieType;
 use App\Form\SortiesType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,26 +18,58 @@ use Symfony\Component\Routing\Annotation\Route;
 class SortiesController extends Controller
 {
     /**
-     * @Route("annuler",name="annuler")
+     * @Route("/afficherSortie",name="afficherSortie")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     */
+    public function afficherSortie(Request $request, EntityManagerInterface $em)
+    {
+        $idSortie = $request->get('id');
+        $sortieRepo = $this->getDoctrine()->getRepository(Sorties::class);
+        $sortie = $sortieRepo->find($idSortie);
+        return $this->render('sorties/afficher.html.twig', [
+            'controller_name' => 'SortiesController',
+            'sortie' => $sortie,
+        ]);
+    }
+
+
+    /**
+     * @Route("/annuler",name="annuler")
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function annuler(Request $request, EntityManagerInterface $em){
+    public function annuler(Request $request, EntityManagerInterface $em)
+    {
         $idSortie = $request->get('id');
+        dump($idSortie);
         $sortieRepo = $this->getDoctrine()->getRepository(Sorties::class);
         $sortie = $sortieRepo->find($idSortie);
         $etatRepo = $this->getDoctrine()->getRepository(Etat::class);
         $etatAnnulee = $etatRepo->find(6);
-        $sortie->setEtat($etatAnnulee);
-        $em->persist($sortie);
-        $em->flush();
-        $this->addFlash('success', 'Votre sortie a bien été annulée');
-        return $this->redirectToRoute("accueil");
+        $annulerSortieForm = $this->createForm(AnnulerSortieType::class, $sortie);
+        $annulerSortieForm->handleRequest($request);
+        dump($sortie);
+        dump($annulerSortieForm->isSubmitted());
+        dump($annulerSortieForm->isValid());
+        if ($annulerSortieForm->isSubmitted() && $annulerSortieForm->isValid()) {
+            dump($idSortie);
+            $sortie->setEtat($etatAnnulee);
+            $em->persist($sortie);
+            $em->flush();
+            $this->addFlash('success', 'Votre sortie a bien été annulée');
+            return $this->redirectToRoute("accueil");
+        }
+        return $this->render('sorties/annuler.html.twig', [
+            'controller_name' => 'SortiesController',
+            'annulerSortie' => $annulerSortieForm->createView(),
+            'sortie' => $sortie,
+        ]);
     }
 
     /**
-     * @Route("seDesister",name="seDesister")
+     * @Route("/seDesister",name="seDesister")
      * @param Request $request
      * @param EntityManagerInterface $em
      */

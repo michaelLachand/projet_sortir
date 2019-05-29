@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Participants;
 use App\Form\ChangePasswordType;
 use App\Form\RegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,17 +30,16 @@ class UserController extends Controller
     public function monProfil(Request $request)
     {
         $user = $this->getUser();
-        if ($user->getPhoto() !=""){
+        if ($user->getPhoto() != "") {
             $user->setPhoto(
-                new File($this->getParameter('images_directory').'/'.$user->getPhoto())
+                new File($this->getParameter('images_directory') . '/' . $user->getPhoto())
             );
         }
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $participantsId = $user;
             //$password = $encoder->encodePassword($participantsId, $participantsId->getPassword());
@@ -47,7 +47,7 @@ class UserController extends Controller
             $participantsId->setActif(true);
             //$participantsId->setPassword($password);
             $file = $participantsId->getPhoto();
-            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+            $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
 
             try {
                 $file->move(
@@ -76,12 +76,13 @@ class UserController extends Controller
     /**
      * @Route("/afficher_profil", name="afficher_profil")
      */
-    public function afficherProfil()
+    public function afficherProfil(Request $request)
     {
-        $user=$this->getUser();
-
+        $idParticipant = $request->get('id');
+        $participantRepo = $this->getDoctrine()->getRepository(Participants::class);
+        $participant = $participantRepo->find($idParticipant);
         return $this->render('user/afficher_profil.html.twig', [
-            'controller_name' => 'UserController', 'participants' => $user,
+            'controller_name' => 'UserController', 'participant' => $participant,
         ]);
     }
 
@@ -106,7 +107,7 @@ class UserController extends Controller
             if ($passwordEncoder->isPasswordValid($user, $oldPassword)) {
                 dump($formPassword);
 
-                $user->setPassword($passwordEncoder->encodePassword($user,$formPassword->get('password')->getData()));
+                $user->setPassword($passwordEncoder->encodePassword($user, $formPassword->get('password')->getData()));
 
                 $em->persist($user);
                 $em->flush();
@@ -121,7 +122,7 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('user/mot_de_passe.html.twig',['formPassword'=> $formPassword->createView()]
+        return $this->render('user/mot_de_passe.html.twig', ['formPassword' => $formPassword->createView()]
         );
     }
 

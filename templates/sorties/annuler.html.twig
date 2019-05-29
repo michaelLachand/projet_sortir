@@ -1,0 +1,31 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Annuler une sortie{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div>
+            <h5>Annuler une sortie</h5>
+        </div>
+        <div>
+            Nom de la sortie : {{ sortie.nomSortie }}
+        </div>
+        <div>
+            Date de la sortie : {{ sortie.datedebut|date ("d/m/Y") }}
+        </div>
+        <div>
+            Ville organisatrice : {{ sortie.site.getNomSite }}
+        </div>
+        <div>
+            Lieu
+            : {{ sortie.lieu.getNomLieu }} {{ sortie.lieu.getRue }} {{ sortie.lieu.getVille.getNomVille }} {{ sortie.lieu.getVille.getCodePostal }}
+        </div>
+
+        {{ form_start(annulerSortie) }}
+        {{ form_row(annulerSortie.descriptionsinfos) }}
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+        <a href="{{ path('accueil') }}" type="button" class="btn btn-primary">Annuler</a>
+        {{ form_end(annulerSortie) }}
+    </div>
+{% endblock %}
