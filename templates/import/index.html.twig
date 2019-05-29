@@ -1,0 +1,10 @@
+{%  extends 'layout.html.twig' %}
+
+
+{% block main %}
+    {{ form_start(formImport)}}
+
+    {{ form_row(formImport.fichier_csv, {'label':'Veuillez choisir un fichier CSV' ,'attr': {'placeholder':'Veuillez entrer un pseudo '}})}}
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+    {{form_end(formImport)}}
+{% endblock %}

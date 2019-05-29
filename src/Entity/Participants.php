@@ -81,7 +81,7 @@ class Participants implements UserInterface, \Serializable
     private $sorties;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string",nullable=true)
      * @Assert\File(
      * maxSize="1000k",
      * maxSizeMessage="Le fichier excède 1000Ko.",
@@ -90,6 +90,8 @@ class Participants implements UserInterface, \Serializable
      * )
      */
     private $photo;
+
+    private $photoUrl;
 
     public function __construct()
     {
@@ -312,5 +314,17 @@ class Participants implements UserInterface, \Serializable
             // see section on salt below
             // $this->salt
             ) = unserialize($serialized);
+    }
+
+    public function getPhotoUrl(): ?string
+    {
+        return $this->photoUrl;
+    }
+
+    public function setPhotoUrl(string $photoUrl): self
+    {
+        $this->photoUrl = $photoUrl;
+
+        return $this;
     }
 }
