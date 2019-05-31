@@ -68,7 +68,7 @@ class UserController extends Controller
             $em->flush();
 
             $this->addFlash("success", "Les modifications ont été prises en compte");
-            return $this->redirectToRoute('accueil');
+            return $this->redirectToRoute('mon_profil');
         }
 
 

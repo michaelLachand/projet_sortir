@@ -46,7 +46,7 @@ class Sorties
      * @Assert\DateTime
      * @var string A "d-m-Y H:i:s" formatted value
      * @Assert\GreaterThan("today", message ="Veuillez indiquer une date postérieure à aujourd'hui.")
-     * @Assert\LessThan(propertyPath="datedebut" ,message =" Veuillez indiquer une date antérieure à .")
+     * @Assert\LessThan(propertyPath="datedebut" ,message =" Veuillez indiquer une date antérieure à la date de début.")
      */
     private $datecloture;
 

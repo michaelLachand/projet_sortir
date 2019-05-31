@@ -39,14 +39,15 @@ class ImportController extends Controller
                     $row++;
                     for ($c = 0; $c < $num; $c++) {
                         $utilisateurs[$row] = array(
-                            "login" => $data [0],
-                            "nom" => $data[1],
-                            "prenom" => $data[2],
-                            "telephone" => $data[3],
-                            "mail" => $data[4],
-                            "password" => $data[5],
-                            "administrateur" => $data[6],
-                            "actif" => $data[7],
+                            "site_id" => $data [0],
+                            "login" => $data [1],
+                            "nom" => $data[2],
+                            "prenom" => $data[3],
+                            "telephone" => $data[4],
+                            "mail" => $data[5],
+                            "password" => $data[6],
+                            "administrateur" => $data[7],
+                            "actif" => $data[8],
                         );
                     }
                 }
