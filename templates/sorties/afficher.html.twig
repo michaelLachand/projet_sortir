@@ -3,67 +3,82 @@
 {% block title %}Détails d'une sortie{% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div>
-            <h5>Détails d'une sortie</h5>
+    <div class="bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <div>
+                        <h5>Détails d'une sortie</h5>
+                    </div>
+                    <div>
+                        Nom de la sortie : {{ sortie.nomSortie }}
+                    </div>
+                    <div>
+                        Date de la sortie : {{ sortie.datedebut|date ("d/m/Y à H:i") }}
+                    </div>
+                    <div>
+                        Date limite d'inscription : {{ sortie.datecloture|date ("d/m/y") }}
+                    </div>
+                    <div>
+                        Nombre de places : {{ sortie.nbinscriptionsmax }}
+                    </div>
+                    <div>
+                        Durée : {{ sortie.duree }} minutes
+                    </div>
+                    <div>
+                        Description et infos : {{ sortie.descriptionsinfos }}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div>
+                        Ville organisatrice : {{ sortie.site.getNomSite }}
+                    </div>
+                    <div>
+                        Ville : {{ sortie.lieu.getVille.getNomVille }}
+                    </div>
+                    <div>
+                        Lieu : {{ sortie.lieu.getNomLieu }}
+                    </div>
+                    <div>
+                        Rue : {{ sortie.lieu.getRue }}
+                    </div>
+                    <div>
+                        Code postal : {{ sortie.lieu.getVille.getCodePostal }}
+                    </div>
+                    <div>
+                        Latitude : {{ sortie.lieu.getLatitude }}
+                    </div>
+                    <div>
+                        Longitude : {{ sortie.lieu.getLongitude }}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            Nom de la sortie : {{ sortie.nomSortie }}
-        </div>
-        <div>
-            Date de la sortie : {{ sortie.datedebut|date ("d/m/Y à H:i") }}
-        </div>
-        <div>
-            Date limite d'inscription : {{ sortie.datecloture|date ("d/m/y") }}
-        </div>
-        <div>
-            Nombre de places : {{ sortie.nbinscriptionsmax }}
-        </div>
-        <div>
-            Durée : {{ sortie.duree }} minutes
-        </div>
-        <div>
-            Description et infos : {{ sortie.descriptionsinfos }}
-        </div>
-        <div>
-            Ville organisatrice : {{ sortie.site.getNomSite }}
-        </div>
-        <div>
-            Ville : {{ sortie.lieu.getVille.getNomVille }}
-        </div>
-        <div>
-            Lieu : {{ sortie.lieu.getNomLieu }}
-        </div>
-        <div>
-            Rue : {{ sortie.lieu.getRue }}
-        </div>
-        <div>
-            Code postal : {{ sortie.lieu.getVille.getCodePostal }}
-        </div>
-        <div>
-            Latitude : {{ sortie.lieu.getLatitude }}
-        </div>
-        <div>
-            Longitude : {{ sortie.lieu.getLongitude }}
-        </div>
-        <div>
-            Liste des participants inscrits :
-        </div>
-        <div>
-            <table class="table">
-                <tr>
-                    <th>Pseudo</th>
-                    <th>Nom</th>
-                </tr>
 
-{% for participant in sortie.participants %}
-    <tr>
-        <td>{{ participant.getLogin }}</td>
-        <td>{{ participant.getPrenom }} {{ participant.getNom }}</td>
-    </tr>
-{% endfor %}
 
-            </table>
+        <div class="container">
+
+
+            <div>
+                Liste des participants inscrits :
+            </div>
+            <div>
+                <table class="table">
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Nom</th>
+                    </tr>
+
+                    {% for participant in sortie.participants %}
+                        <tr>
+                            <td>{{ participant.getLogin }}</td>
+                            <td>{{ participant.getPrenom }} {{ participant.getNom }}</td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+                <a href="{{ path('accueil') }}" type="button" class="btn btn-primary btn-lg btn-block">Annuler</a>
+            </div>
         </div>
 
     </div>

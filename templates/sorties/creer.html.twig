@@ -3,56 +3,68 @@
 {% block title %}Créer une nouvelle sortie{% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div><h5>Créer une sortie</h5></div>
+    <div class="bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <div><h5>Créer une sortie</h5></div>
 
-        {{ form_start(creerSortie) }}
-        <div class="form-group row">
-            {{ form_row(creerSortie.nom_sortie) }}
-        </div>
-        <div class="form-group row">
-            {{ form_row(creerSortie.datedebut) }}
-        </div>
-        <div class="form-group row">
-            {{ form_row(creerSortie.datecloture) }}
-        </div>
-        <div class="form-group row">
-            {{ form_row(creerSortie.nbinscriptionsmax) }}
-        </div>
-        <div class="form-group row">
-            {{ form_row(creerSortie.duree) }}
-        </div>
-        <div class="form-group row">
-            {{ form_row(creerSortie.descriptionsinfos) }}
-        </div>
-        <div>Ville organisatrice</div>
-        <div class="form-group row">
-            {{ form_row(creerSortie.ville) }}
-        </div>
-{#        <label>Lieu : </label>#}
-        <div class="form-group row">
+                    {{ form_start(creerSortie) }}
+                    <div class="form-group row">
+                        {{ form_row(creerSortie.nom_sortie) }}
+                    </div>
+                    <div class="form-group row">
+                        {{ form_row(creerSortie.datedebut) }}
+                    </div>
+                    <div class="form-group row">
+                        {{ form_row(creerSortie.datecloture) }}
+                    </div>
+                    <div class="form-group row">
+                        {{ form_row(creerSortie.nbinscriptionsmax) }}
+                    </div>
+                    <div class="form-group row">
+                        {{ form_row(creerSortie.duree) }}
+                    </div>
+                    <div class="form-group row">
+                        {{ form_row(creerSortie.descriptionsinfos) }}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div><h5>Ville organisatrice</h5></div>
+                    <div class="form-group row">
+                        {{ form_row(creerSortie.ville) }}
+                    </div>
+                    {#        <label>Lieu : </label>#}
+                    <div class="form-group row">
 
-            {{ form_row(creerSortie.lieu) }}
-{#            <select name="lieux" id="lieux"></select>#}
-        </div>
-        <div class="form-group row">Rue :</div>
-        <div class="form-group row" id="rue">
-        </div>
-        <div class="form-group row">Code postal :</div>
-        <div class="form-group row" id="codePostal">
-        </div>
-        <div class="form-group row">Latitude :</div>
-        <div class="form-group row" id="latitude">
-        </div>
-        <div class="form-group row">Longitude :</div>
-        <div class="form-group row" id="longitude">
+                        {{ form_row(creerSortie.lieu) }}
+                        {#            <select name="lieux" id="lieux"></select>#}
+                    </div>
+                    <div class="form-group row">Rue :</div>
+                    <div class="form-group row" id="rue">
+                    </div>
+                    <div class="form-group row">Code postal :</div>
+                    <div class="form-group row" id="codePostal">
+                    </div>
+                    <div class="form-group row">Latitude :</div>
+                    <div class="form-group row" id="latitude">
+                    </div>
+                    <div class="form-group row">Longitude :</div>
+                    <div class="form-group row" id="longitude">
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Créer une sortie</button>
-        <a href="{{ path('accueil') }}" type="button" class="btn btn-primary">Annuler</a>
-        {{ form_end(creerSortie) }}
+
+        <div class="container">
+
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Créer une sortie</button>
+            <a href="{{ path('accueil') }}" type="button" class="btn btn-primary btn-lg btn-block">Annuler</a>
+            {{ form_end(creerSortie) }}
+        </div>
     </div>
-
     <script src="jquery-3.4.1.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -89,7 +101,7 @@
             // $('#lieux').change();
         });
         $('#creer_sortie_lieu').change(function (e) {
-        // $('#lieux').change(function (e) {
+            // $('#lieux').change(function (e) {
             var lieu = $('#creer_sortie_lieu').val();
             // var lieu = $('#lieux').val();
             console.log(lieu);
