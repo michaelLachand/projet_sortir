@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Participants;
 use App\Form\ChangePasswordType;
+use App\Form\NouvelUtilisateurType;
 use App\Form\RegistrationType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\File;
@@ -21,6 +23,7 @@ class UserController extends Controller
     {
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
+
         ]);
     }
 
@@ -34,22 +37,21 @@ class UserController extends Controller
         $user->setPhotoUrl($user->getPhoto());
         if ($user->getPhoto() !=""){
             $user->setPhoto(
-                new File($this->getParameter('images_directory') . '/' . $user->getPhoto())
+                new File($this->getParameter('images_directory').'/'.$user->getPhoto())
             );
         }
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
 
             $participantsId = $user;
-            //$password = $encoder->encodePassword($participantsId, $participantsId->getPassword());
             $participantsId->setAdministrateur(false);
             $participantsId->setActif(true);
-            //$participantsId->setPassword($password);
             $file = $participantsId->getPhoto();
-            $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
+            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
 
             try {
                 $file->move(
@@ -66,7 +68,7 @@ class UserController extends Controller
             $em->flush();
 
             $this->addFlash("success", "Les modifications ont été prises en compte");
-            return $this->redirectToRoute('afficher_profil');
+            return $this->redirectToRoute('accueil');
         }
 
 
@@ -130,6 +132,52 @@ class UserController extends Controller
     private function generateUniqueFileName()
     {
         return md5(uniqid());
+    }
+
+    /**
+     * @Route("/nouvel_utilisateur", name="nouvel_utilisateur")
+    */
+    public function nouvelUtilisateur(Request $request,EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
+    {
+
+        $participants = new Participants();
+        if ($participants->getPhoto() !=""){
+            $participants->setPhoto(
+                new File($this->getParameter('images_directory') . '/' . $participants->getPhoto())
+            );
+        }
+        $form = $this->createForm(NouvelUtilisateurType::class , $participants);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $password = $encoder->encodePassword($participants, $participants->getPassword());
+            $participants->setPassword($password);
+
+            $file = $participants->getPhoto();
+            $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
+
+            try {
+                $file->move(
+                    $this->getParameter('images_directory'),
+                    $fileName
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+            $participants->setPhoto($fileName);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($participants);
+            $em->flush();
+
+            return $this->redirectToRoute('accueil');
+        }
+
+        dump($form);
+        return $this->render('user/nouvel_utilisateur.html.twig', [
+           'form' => $form->createView(),]
+
+        );
     }
 
 }

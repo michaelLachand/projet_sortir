@@ -21,7 +21,7 @@ class RegistrationType extends AbstractType
             ->add('login',TextType::class)
             ->add('nom', TextType::class)
             ->add('prenom',TextType::class)
-            ->add('telephone', TextType::class)
+            ->add('telephone', TextType::class,array('required' => false))
             ->add('mail', EmailType::class)
             ->add('site', EntityType::class,['class' => Sites::class,'choice_label' => 'nom_site'])
             ->add('photo', FileType::class, array('label' => 'Votre photo' , 'required' => false))
